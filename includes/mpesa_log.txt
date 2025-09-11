@@ -1,0 +1,21 @@
+2025-09-04T11:46:15+02:00 STK Response: {
+                    "requestId":"5b4d-4f9e-9309-c33c186258b810672",
+                    "errorCode": "404.001.03",
+                    "errorMessage": "Invalid Access Token"
+                }
+            
+2025-09-04T11:46:29+02:00 STK Response: {
+                    "requestId":"5b4d-4f9e-9309-c33c186258b810678",
+                    "errorCode": "404.001.03",
+                    "errorMessage": "Invalid Access Token"
+                }
+            
+2025-09-09T13:12:26+02:00 AccessToken Error: 
+2025-09-09T13:16:29+02:00 STK Response: {
+            "MerchantRequestID":"e6d0-4ee5-b894-2bf12f323bfa8072",
+            "CheckoutRequestID":"ws_CO_090920251416274795142227",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
