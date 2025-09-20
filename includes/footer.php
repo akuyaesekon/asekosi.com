@@ -26,7 +26,7 @@
                     <ul class="list-unstyled mb-0">
                         <li><a href="../index.php" class="text-white text-decoration-none footer-link">Home</a></li>
                         <li><a href="../customer/products.php" class="text-white text-decoration-none footer-link">Products</a></li>
-                        <li><a href="../index.php?view=register&type=vendor" class="text-white text-decoration-none footer-link">Become a Vendor</a></li>
+                        <li><a href="index.php" class="text-white text-decoration-none footer-link">Become a Vendor</a></li>
                         <li><a href="#" class="text-white text-decoration-none footer-link">Contact Us</a></li>
                         <li><a href="#" class="text-white text-decoration-none footer-link">FAQs</a></li>
                     </ul>

@@ -4,7 +4,28 @@ requireRole('customer');
 
 $user = getCurrentUser($pdo);
 
-// Get orders
+// ✅ Handle order cancellation
+if (isset($_POST['cancel_order_id'])) {
+    $orderId = intval($_POST['cancel_order_id']);
+
+    // Check if order belongs to user and is still pending
+    $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ? AND customer_id = ? AND status = 'pending'");
+    $stmt->execute([$orderId, $user['id']]);
+    $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($order) {
+        $update = $pdo->prepare("UPDATE orders SET status = 'cancelled' WHERE id = ?");
+        $update->execute([$orderId]);
+        $_SESSION['success'] = "Order #{$orderId} has been cancelled.";
+    } else {
+        $_SESSION['error'] = "Order cannot be cancelled (already processed or not found).";
+    }
+
+    header("Location: orders.php");
+    exit();
+}
+
+// ✅ Fetch all orders for customer
 $stmt = $pdo->prepare("
     SELECT o.*, 
            (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count
@@ -24,6 +45,10 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php if (isset($_SESSION['success'])): ?>
     <div class="alert alert-success"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></div>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
 <?php endif; ?>
 
 <?php if (count($orders) > 0): ?>
@@ -62,8 +87,15 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <?php echo ucfirst($order['status']); ?>
                                     </span>
                                 </td>
-                                <td>
-                                    <a href="orders.php?view=order&id=<?php echo $order['id']; ?>" class="btn btn-sm btn-primary">View Details</a>
+                                <td class="d-flex gap-2">
+                                    <a href="orders.php?view=order&id=<?php echo $order['id']; ?>" class="btn btn-sm btn-primary">View</a>
+                                    
+                                    <?php if ($order['status'] === 'pending'): ?>
+                                        <form method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                                            <input type="hidden" name="cancel_order_id" value="<?php echo $order['id']; ?>">
+                                            <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                                        </form>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

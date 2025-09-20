@@ -19,14 +19,29 @@ define('MPESA_TRANSACTION_TYPE', 'CustomerPayBillOnline');
 
 // Commission rates
 define('ADMIN_COMMISSION', 0.15); // 15% commission
-define('DELIVERY_FEE', 100); // KES 100 delivery fee
 
-// Check if user is logged in
+// Delivery fees per city (editable)
+$DELIVERY_FEES = [
+    "Nairobi" => 150,
+    "Mombasa" => 200,
+    "Kisumu" => 180,
+    "Eldoret" => 170,
+    "Nakuru" => 160,
+    "Default" => 250 // if city not listed
+];
+
+// Function to get delivery fee
+function getDeliveryFee($city) {
+    global $DELIVERY_FEES;
+    $city = trim(ucwords(strtolower($city)));
+    return $DELIVERY_FEES[$city] ?? $DELIVERY_FEES["Default"];
+}
+
+// User authentication helpers
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
-// Redirect if not logged in
 function requireLogin() {
     if (!isLoggedIn()) {
         header('Location: ../index.php');
@@ -34,7 +49,6 @@ function requireLogin() {
     }
 }
 
-// Check if user has specific role
 function requireRole($role) {
     requireLogin();
     if ($_SESSION['user_type'] != $role) {
@@ -43,12 +57,9 @@ function requireRole($role) {
     }
 }
 
-// Get current user data
 function getCurrentUser($pdo) {
     if (!isLoggedIn()) return null;
-    
     $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-?>

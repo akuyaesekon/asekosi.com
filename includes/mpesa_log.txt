@@ -27,3 +27,11 @@
             "CustomerMessage":"Success. Request accepted for processing"
         }
         
+2025-09-20T19:58:08+02:00 STK Response: {
+            "MerchantRequestID":"599e-470f-b3e1-4faa1d7ffaf015570",
+            "CheckoutRequestID":"ws_CO_20092025205806983795142227",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
